@@ -1,0 +1,23 @@
+- hosts: all
+  become: yes
+  user: vagrant
+  gather_facts: yes
+  pre_tasks:
+  - name: 'Atualizando o repo Debian/Ubuntu'
+    raw: 'apt-get update'
+    when: ansible_distribution == "Debian" or ansible_distribution == "Ubuntu"
+ 
+  - name: 'Atualizando o repo Centos/RedHat'
+    raw: 'yum update -y'
+    when: ansible_distribution == "Centos" or ansible_distribution == "RedHat"
+  
+  - name: 'Instalando o Python Debian/Ubuntu'
+    raw: 'apt-get install -y python'
+    when: ansible_distribution == "Debian" or ansible_distribution == "Ubuntu"
+
+  - name: 'Instalando Python Centos/RedHat'
+    raw: 'yum install python -y'
+    when: ansible_distribution == "Centos" or ansible_distribution == "RedHat"
+
+  roles:
+  - { role: common, tags: ["common_role"]}
